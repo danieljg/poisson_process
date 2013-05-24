@@ -1,0 +1,22 @@
+===========================================================
+
+++ dg - Periodic Poisson process simulator
+
+This application generates the output file 'fakedata.dat', which is a realization of a periodic poisson process.
+
+No user interface has been coded (no arguments exist for changing Nbar), although modifying the program parameters should be fairly easy: Look for the 'make data' subroutine.
+
+[sorry for the billingual comments]
+
+If ifort is availble, running 'runme.sh' compiles and runs the executable 'dg'. No optimization compiler flags where used (as none where needed really the program runs pretty fast as is).
+
+===========================================================
+
+++ estimate - Estimator for quality of simulation routines
+
+This application generates the output file(s) 'histogram.dat', which is a 1-1 record of the empirical distribution of arrivals per simulation period.
+
+
+Additionally, it calculates the factorial moments for comparison with the expected value relationship of the Poisson distribution.
+
+===========================================================
