@@ -4,6 +4,7 @@
 
 program estimate
 use aux
+use MKL_DFTI
 implicit none
 integer :: k            ! do loop counter
 integer :: diff         ! difference of Nbar and Ncum
