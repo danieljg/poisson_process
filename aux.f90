@@ -88,7 +88,7 @@ implicit none
   ! Crear una copia de la distribucion
   dist_copy = distribution
   ! Calcular funcion de correlacion cruzada
-  crosscorr = ccf(dataset, dist_copy)
+  crosscorr = ccf_dft(dataset, dist_copy)
   ! Encontrar la posicion del maximo
   phaseval = maxloc(crosscorr,1)
   !write(*,*)"phase",phase
@@ -123,13 +123,18 @@ implicit none
                                DFTI_COMPLEX,&
                                1, l )
   stat = DftiCommitDescriptor( My_Desc1_Handle )
-  stat = DftiSetValue( My_Desc1_Handle, DFTI_PLACEMENT,&
-                       DFTI_NOT_INPLACE)
+!  stat = DftiSetValue( My_Desc1_Handle, DFTI_PLACEMENT,&
+!                       DFTI_NOT_INPLACE)
   stat = DftiComputeForward(My_Desc1_Handle,&
-                            carray1,farray1)
+                            carray1)!,farray1)
   stat = DftiComputeForward(My_Desc1_Handle,&
-                            carray2,farray2)
-  
+                            carray2)!,farray2)
+!  farray1 = farray1*conjg(farray2)
+  carray1=carray1*conjg(carray2)
+  stat = DftiComputeBackward(My_Desc1_Handle,&
+                             carray1)!farray1,carray1)
+  ccf_dft = real(carray1)
+  stat = DftiFreeDescriptor(My_Desc1_Handle)
  end function ccf_dft
 
  ! Calcular la correlacion cruzada
