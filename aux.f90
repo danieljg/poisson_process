@@ -29,8 +29,8 @@ implicit none
    ! calcular la intensidad por este "bin"
    lambda = &
    ( 1.0 + (vis*Period/(2.0*pi*dt))*&
-    (sin(2.0*pi*(k-0.5)*dt/Period + phase)&
-     - sin(2.0*pi*(k-1.5)*dt/Period + phase) )& 
+    (sin(2.0*pi*(k+0.5)*dt/Period + phase)&
+     - sin(2.0*pi*(k-0.5)*dt/Period + phase) )& 
    ) * (Nbar/Period)
    ! llenar el "bin" de puntos
    ycum = 0.0
@@ -170,7 +170,7 @@ implicit none
  real, intent(out), &
        dimension(l) :: cosine
   do k=1, l
-   cosine(k) = cos(2.0*pi*(k-1.0)/real(l))
+   cosine(k) = cos(2.0*pi*(k-1)/real(l))
   end do
  end subroutine calculate_cosine
 
