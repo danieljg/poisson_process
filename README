@@ -14,9 +14,8 @@ If ifort is availble, running 'runme.sh' compiles and runs the executable 'dg'. 
 
 ++ estimate - Estimator for quality of simulation routines
 
-This application generates the output file(s) 'histogram.dat', which is a 1-1 record of the empirical distribution of arrivals per simulation period.
+This application generates the output file(s) 'histogram.dat', which is a 1-1 record of the empirical distribution of arrivals per simulation period. The data is then tested for comparison with the factorial moments of the Poisson distribution. The output of this is given on 'fact_moments.dat'.
 
-
-Additionally, it calculates the factorial moments for comparison with the expected value relationship of the Poisson distribution.
+Finally, it calculates the phase for every generated fringe and stores it on 'phase.dat'. In the future, this will be followed by an analysis of dispersion.
 
 ===========================================================
