@@ -10,14 +10,11 @@ No optimizations gave been implemented.
 This application generates the output file 'fakedata.dat',
 which is a realization of a periodic poisson process.
 
-changing Nbar), although modifying the program parameters
-should be fairly easy: Look for the 'make data' subroutine.
-
 The bash script file 'dg.sh' runs the executable 'dg_cli'
 with suitable command line arguments. There are variables
 here that define the total number of realizations and the
 expected number of photons per fringe. All output files are
-stored for later use in './fringe_data/'
+stored for later use in './data/'
 ===========================================================
 ++ estimate - Estimator for quality of simulation routines
 

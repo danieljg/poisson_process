@@ -49,8 +49,6 @@ contains
    write(15,*) i,dataset(i)
   enddo
   close(15)
-  write(*,*)'mean N:    ',Nbar
-  write(*,*)'observed N:',Ncum
  end subroutine write_data
 end module dg_module
 
