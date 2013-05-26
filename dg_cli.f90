@@ -15,7 +15,9 @@ contains
   endif
   k=1
   k=read_real(k,Nbar)
+  Nbar=10*(2**Nbar)
   k=read_real(k,vis)
+  vis=vis/100
  end subroutine read_command_arguments
 
  subroutine initialize_variables
