@@ -17,11 +17,11 @@ number_of_fringes=100
 # to   : 10*2^jmax (should be 10 for final test)
 # (calculation is internal)
  jmin=1
- jmax=4
+ jmax=10
 # evaluated visibilities go as
 # vis=k*5 (internal division by 100)
 # (should be from 1 to 20)
- kmin=12
+ kmin=1
  kmax=19
 echo jmin=$jmin, jmax=$jmax
 echo kmin=$kmin, kmax=$kmax
