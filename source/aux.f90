@@ -175,11 +175,13 @@ implicit none
  end subroutine calculate_cosine
 
  ! Calcular el vector gaussiano para la correlacion cruzada
- subroutine calculate_gaussian(gaussian,width)
+ subroutine calculate_gaussian(gaussian,rad_width)
  implicit none
  integer :: k
- real, intent(in) :: width
+ real, intent(in) :: rad_width
  real, intent(out) :: gaussian(l)
+ real :: width
+ width = rad_width*l/(2*pi)
  do k=1, l/2
   gaussian(k) = (exp( (k-1)/width))**2
  end do
