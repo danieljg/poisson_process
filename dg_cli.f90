@@ -43,10 +43,11 @@ contains
  
  subroutine write_data
  implicit none
- integer :: i
+ integer :: i,j
   open(15, file="fakedata.dat")
   do i =1, l
-   write(15,*) i,dataset(i)
+   j=nint(dataset(i))
+   write(15,*) i,j
   enddo
   close(15)
  end subroutine write_data
