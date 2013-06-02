@@ -10,7 +10,7 @@ integer :: fact_moments ! # number of factorial moments
                         ! to be calculated
 integer :: phase_moments! # of moments about the mean to
                       ! be calculated for the phase data
-parameter(nn=1e5,nbin=1024, fact_moments=20, phase_moments=8)
+parameter(nn=1e5,nbin=l, fact_moments=20, phase_moments=8)
 real :: phase_n(nn), phasevec(phase_moments)
 real :: hist(nbin), moments(fact_moments)
 contains
@@ -23,10 +23,9 @@ implicit none
  dt     = 1.3107e-3   ! time interval for a measurement
 end subroutine initialize_variables
 
-subroutine calculate_histogram_and_phases(vector)
+subroutine calculate_histogram_and_phases
 implicit none
 integer k, diff         ! difference of Nbar and Ncum
-real, intent(in), dimension(l) :: vector
  ! initialize histogram recording array
  hist(1:nbin) = 0
  ! run data-generating routine nn times
@@ -41,7 +40,7 @@ real, intent(in), dimension(l) :: vector
     hist((nbin-1)/2+diff) = hist( (nbin-1)/2 + diff ) + 1
    end if
   ! estimate phase
-  call estimate_phase(dataset,vector,l,phase_n(k))
+  call estimate_phase(dataset,l,phase_n(k))
  end do
  ! writeout
  call write_bin_data

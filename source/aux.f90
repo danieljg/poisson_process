@@ -75,93 +75,41 @@ implicit none
  end subroutine factorial_moments
 
  ! Estimar fase y visibilidad
- subroutine estimate_phase(dataset,distribution,l,phaseval)
+ subroutine estimate_phase(dataset,l,phaseval)
  implicit none
  integer, intent(in) :: l
  real, dimension(l)  &
-     , intent(in)    :: dataset,distribution
- real, dimension(l)  :: dist_copy
+     , intent(in)    :: dataset
  real, intent(out)   :: phaseval
- real, dimension(l)  :: crosscorr
  integer :: i,tt=1
- real    :: mc,md
-  ! Crear una copia de la distribucion
-  dist_copy = distribution
-  ! Calcular funcion de correlacion cruzada
-  crosscorr = ccf_dft(dataset, dist_copy)
-  ! Encontrar la posicion del maximo
-  phaseval = maxloc(crosscorr,1)
-  !write(*,*)"phase",phase
-  !max_loc  = 1
+  ! Calcular fase por standard quantum limit
+  call std_quantum(dataset,phaseval)
+  phaseval=nint(phaseval*l/(2*pi))
   if(tt.eq.1) then
-   mc = maxval(crosscorr,1)
-   md = maxval(dataset,1)
-   open(15,file="ccf.dat")
    write(*,*)"expected_phase",phase*l/(2*pi)
    write(*,*)"estimated_phase",phaseval
-   do i=1,l
-    write(15,'(I4,3F6.2)')i,crosscorr(i)/mc,&
-                dataset(i)/md,distribution(i)
-   end do
    tt=0
   end if
  end subroutine estimate_phase
 
- function ccf_dft(array1,array2)
+ subroutine std_quantum(dataset,phase)
  implicit none
- real, dimension(l) :: array1, array2
- real, dimension(l) :: ccf_dft
- complex, dimension(l) :: carray1, carray2,&
-                          farray1, farray2
- complex, dimension(l) :: cout1, cout2
- type(DFTI_DESCRIPTOR), POINTER :: My_Desc1_Handle
- integer :: stat
-  carray1=array1
-  carray2=array2
-  stat = DftiCreateDescriptor( My_Desc1_Handle,&
-                               DFTI_SINGLE,&
-                               DFTI_COMPLEX,&
-                               1, l )
-  stat = DftiCommitDescriptor( My_Desc1_Handle )
-!  stat = DftiSetValue( My_Desc1_Handle, DFTI_PLACEMENT,&
-!                       DFTI_NOT_INPLACE)
-  stat = DftiComputeForward(My_Desc1_Handle,&
-                            carray1)!,farray1)
-  stat = DftiComputeForward(My_Desc1_Handle,&
-                            carray2)!,farray2)
-!  farray1 = farray1*conjg(farray2)
-  carray1=carray1*conjg(carray2)
-  stat = DftiComputeBackward(My_Desc1_Handle,&
-                             carray1)!farray1,carray1)
-  ccf_dft = real(carray1)
-  stat = DftiFreeDescriptor(My_Desc1_Handle)
- end function ccf_dft
-
- ! Calcular la correlacion cruzada
- function ccf(array1,array2)
- implicit none
- real, dimension(l) :: array1, array2
- real, dimension(l) :: ccf
- integer :: i
-  ! Calcular la ccf
-  do i=1,l
-   ccf(i) = dot_product(array1,array2)
-   ! shift the array
-   array2 = shift(array2)
-  end do
- end function ccf
-
- ! Deslizar el pulso periodico en un dt
- function shift(array)
- implicit none
- real :: keeper
- real, dimension(l), intent(in) :: array
- real, dimension(l) :: shift
-  ! save first value
-  keeper       = array(1)
-  shift(1:l-1) = array(2:l)
-  shift(l)     = keeper
- end function shift
+ real, dimension(l), intent(in) :: dataset
+ real, intent(out)  :: phase
+ real    :: cosine(l), sine(l), re, im
+ integer :: j
+ re = 0.0
+ im = 0.0
+ call calculate_cosine(cosine)
+ call calculate_sine(sine)
+ re = dot_product(dataset,cosine)
+ im = dot_product(dataset,sine)
+ if(atan2(im,re).ge.0)then
+  phase = atan2(im,re)
+ else
+  phase = atan2(im,re)+2*pi
+ endif
+ end subroutine
 
  ! Calcular el vector coseno para la correlacion cruzada
  subroutine calculate_cosine(cosine)
@@ -174,19 +122,15 @@ implicit none
   end do
  end subroutine calculate_cosine
 
- ! Calcular el vector gaussiano para la correlacion cruzada
- subroutine calculate_gaussian(gaussian,width)
+ subroutine calculate_sine(sine)
  implicit none
  integer :: k
- real, intent(in) :: width
- real, intent(out) :: gaussian(l)
- do k=1, l/2
-  gaussian(k) = (exp( (k-1)/width))**2
- end do
- do k=l/2+1,l
-  gaussian(k) = (exp( (k-l-1)/width))**2
- end do
- end subroutine calculate_gaussian
+ real, intent(out), &
+       dimension(l) :: sine
+  do k=1, l
+   sine(k) = sin(2.0*pi*(k-1)/real(l))
+  end do
+ end subroutine calculate_sine
 
  ! Calcular momentos alrededor de la media
  subroutine calculate_moments(n,k,vec,phase_moments)
