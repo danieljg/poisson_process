@@ -18,8 +18,8 @@ contains
 subroutine initialize_variables
 implicit none
  phase  = pi
- Nbar   = 400
- vis    = 0.7
+ Nbar   = 1200
+ vis    = 0.75
  dt     = 1.3107e-3   ! time interval for a measurement
 end subroutine initialize_variables
 
@@ -74,7 +74,7 @@ integer k
  open(15,file="phase.dat")
  write(15,*) '# ','"k" ','" phase(k)" '
  do k=1,nn
-  write(15,*)k,phase_n(k)
+  write(15,*)k,phase_n(k)-512
  enddo
  close(15)
  open(16,file="phase_moments.dat")
