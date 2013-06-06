@@ -18,8 +18,8 @@ contains
 subroutine initialize_variables
 implicit none
  phase  = pi
- Nbar   = 4000
- vis    = 0.9
+ Nbar   = 400
+ vis    = 0.7
  dt     = 1.3107e-3   ! time interval for a measurement
 end subroutine initialize_variables
 
