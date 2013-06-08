@@ -10,9 +10,9 @@ integer :: fact_moments ! # number of factorial moments
                         ! to be calculated
 integer :: phase_moments! # of moments about the mean to
                       ! be calculated for the phase data
-parameter(nn=1e5,nbin=1024, fact_moments=20, phase_moments=8)
-real :: phase_n(nn), phasevec(phase_moments)
-real :: hist(nbin), moments(fact_moments)
+parameter(nn=1e5,nbin=l, fact_moments=20, phase_moments=8)
+real :: phase_n(nn), phasevec(phase_moments), phase_hist(nbin)
+real :: counts_hist(nbin), moments(fact_moments)
 contains
 
 subroutine initialize_variables
@@ -28,7 +28,8 @@ implicit none
 integer k, diff         ! difference of Nbar and Ncum
 real, intent(in), dimension(l) :: vector
  ! initialize histogram recording array
- hist(1:nbin) = 0
+ counts_hist(1:nbin) = 0
+ phase_hist(1:nbin) = 0
  ! run data-generating routine nn times
  do k=1,nn
   ! simulate random process
@@ -38,32 +39,50 @@ real, intent(in), dimension(l) :: vector
    if( abs(diff) .gt. (nbin-1)/2 ) then 
     write(*,*)'this should not happen'
    else
-    hist((nbin-1)/2+diff) = hist( (nbin-1)/2 + diff ) + 1
+    counts_hist((nbin-1)/2+diff) = counts_hist( (nbin-1)/2 + diff ) + 1
    end if
   ! estimate phase
   call estimate_phase(dataset,vector,l,phase_n(k))
+  ! update phase histogram
+  diff=phase_n(k)-(phase*nbin/(2*pi))
+  phase_hist( nbin/2+diff ) = phase_hist(nbin/2+diff) + 1
  end do
  ! writeout
- call write_bin_data
+ call write_counts_bin_data
+ call write_phase_bin_data
 end subroutine calculate_histogram_and_phases
 
-subroutine write_bin_data
+subroutine write_phase_bin_data
 implicit none
 integer k
- open(15, file="histogram.dat")
+ ! write to file
+ open(15, file="phase_histogram.dat")
+ write(15,*)"# error, relative frequency"
+ do k=1,nbin
+  write(15,*) k-nbin/2,phase_hist(k)/nn
+ end do
+ close(15) 
+end subroutine write_phase_bin_data
+
+subroutine write_counts_bin_data
+implicit none
+integer k
+ ! normalize histogram
+ counts_hist(1:nbin) = counts_hist(1:nbin)/nn
+ ! write to file
+ open(15, file="counts_histogram.dat")
  write(15,*)"#"
  do k=1,nbin
-  write(15,*) k-1 -(nbin-1)/2 + nbar , hist(k)
+  write(15,*) k-1 -(nbin-1)/2 + nbar , counts_hist(k)
  end do
  close(15)
- ! normalize histogram
- hist(1:nbin) = hist(1:nbin)/nn
-end subroutine write_bin_data
+write(*,*)'testing', k-1-(nbin-1)/2+nbar,nbin
+end subroutine write_counts_bin_data
 
 subroutine phase_moments_driver
 implicit none
  ! calculate moments
- call calculate_moments(phase_moments,nn,&
+ call calculate_phase_moments(phase_moments,nn,&
                         phase_n,phasevec)
  ! save phase data to file
  call write_phase_moments()
@@ -90,7 +109,7 @@ end subroutine write_phase_moments
 subroutine factorial_moments_driver
 implicit none
 integer  :: k
- call factorial_moments(fact_moments,nbin,hist,moments)
+ call factorial_moments(fact_moments,nbin,counts_hist,moments)
  open(15, file="fact_moments.dat")
   write(15,*) '# "r" ','"<n>^r" ',' "fact. moments"',' "% error (theo)"',' "% error (emp)"'
   do k=1,fact_moments
