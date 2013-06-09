@@ -10,7 +10,7 @@ integer :: fact_moments ! # number of factorial moments
                         ! to be calculated
 integer :: phase_moments! # of moments about the mean to
                       ! be calculated for the phase data
-parameter(nn=1e5,nbin=l, fact_moments=20, phase_moments=8)
+parameter(nn=1e2,nbin=l, fact_moments=20, phase_moments=8)
 real :: phase_n(nn), phasevec(phase_moments), phase_hist(nbin)
 real :: counts_hist(nbin), moments(fact_moments)
 character(40) :: filepath
@@ -30,19 +30,38 @@ implicit none
  endif
 end subroutine initialize_variables
 
+   subroutine int_to_char(archivo,n)
+     IMPLICIT NONE
+     integer n,i
+     character(len=3) :: tmp
+     character(len=3),dimension(n) :: string
+     character(len=13),dimension(n) :: archivo
 
-subroutine read_histogram
+     do i=1,n
+        write(tmp,'(I3)')i
+        string(i)=tmp
+     end do
+
+     do i=1,n
+        archivo(i)="angulo"//string(i)//".dat"
+     end do 
+
+   end subroutine int_to_char
+
+subroutine read_histogram(ggzz)
 implicit none
-integer :: dummy,k
-character(40) :: filename="/fakedata"
- call system('gunzip '//filepath//filename//'.gz')
- open(unit=15,file=filepath//filename//'.dat')
+integer :: dummy,k,ggzz
+character(40) :: filename="fakedata",ccgz
+ call int_to_char(ccgz,ggzz)
+ call system('gunzip '//filepath//ccgz//'.gz -N')
+ open(unit=15,file=filepath//filename)
  do k = 1, nbin
   read(15,*) dummy,dataset(k)
  end do
  Ncum=sum(dataset)
  close(15)
- call system('gunzip '//filepath//filename//'.dat')
+ call system('gzip '//filepath//filename//'.dat')
+ call system('mv '//filepath//filename//'.gz '//filepath//filename//ccgz//'.gz')
 end subroutine read_histogram
 
 subroutine calculate_contrast_and_phase
@@ -53,7 +72,7 @@ integer k, diff         ! difference of Nbar and Ncum
  phase_hist(1:nbin) = 0
  ! run data-generating routine nn times
  do k=1,nn
-  call read_histogram ! reads dataset anddefines Ncum and 
+  call read_histogram(k) ! reads dataset anddefines Ncum and 
   ! update histogram 
    diff=Ncum-Nbar
    if( abs(diff) .gt. (nbin-1)/2 ) then 
