@@ -13,55 +13,52 @@ integer :: phase_moments! # of moments about the mean to
 parameter(nn=1e2,nbin=l, fact_moments=20, phase_moments=8)
 real :: phase_n(nn), phasevec(phase_moments), phase_hist(nbin)
 real :: counts_hist(nbin), moments(fact_moments)
-character(40) :: filepath
+character(6) :: file_nbar, file_vis
+character(40) ::filepath
 contains
 
 subroutine initialize_variables
 implicit none
  phase  = pi
- Nbar   = 200
- vis    = 0.7
  dt     = 1.3107e-3   ! time interval for a measurement
  if(command_argument_count().eq.0)then
-  write(*,*)'input must be path to fringe data'
+  write(*,*)'this should be run from the script, fool'
+  write(*,*)"unless you now what i'm doing"
+  write(*,*)'my notebook has the instructions'
   stop
  else
-  call get_command_argument(1,filepath)
+  call get_command_argument(1,file_nbar)
+  call get_command_argument(2,file_vis)
+  filepath='data/nbar_'//trim(file_nbar)//'/vis_'//trim(file_vis)//'/'
+  read(file_nbar,*)Nbar
+  read(file_vis,*)vis
+  Nbar   = 10*(2**nbar)
+  vis    = vis/100
  endif
 end subroutine initialize_variables
 
-   subroutine int_to_char(archivo,n)
-     IMPLICIT NONE
-     integer n,i
-     character(len=3) :: tmp
-     character(len=3),dimension(n) :: string
-     character(len=13),dimension(n) :: archivo
-
-     do i=1,n
-        write(tmp,'(I3)')i
-        string(i)=tmp
-     end do
-
-     do i=1,n
-        archivo(i)="angulo"//string(i)//".dat"
-     end do 
-
-   end subroutine int_to_char
+subroutine int_to_char(tmp,n)
+implicit none
+ integer n
+ character(len=6) :: tmp
+ write(tmp,'(I6)')n
+ tmp = adjustl(tmp)
+end subroutine int_to_char
 
 subroutine read_histogram(ggzz)
 implicit none
 integer :: dummy,k,ggzz
-character(40) :: filename="fakedata",ccgz
+character(6) :: ccgz
  call int_to_char(ccgz,ggzz)
- call system('gunzip '//filepath//ccgz//'.gz -N')
- open(unit=15,file=filepath//filename)
+ call system('gunzip '//trim(filepath)//trim(ccgz)//'.gz -N')
+ open(unit=15,file=trim(filepath)//'fakedata.dat')
  do k = 1, nbin
   read(15,*) dummy,dataset(k)
  end do
  Ncum=sum(dataset)
  close(15)
- call system('gzip '//filepath//filename//'.dat')
- call system('mv '//filepath//filename//'.gz '//filepath//filename//ccgz//'.gz')
+ call system('gzip '//trim(filepath)//'fakedata.dat')
+ call system('mv '//trim(filepath)//'fakedata.dat.gz '//trim(filepath)//trim(ccgz)//'.gz')
 end subroutine read_histogram
 
 subroutine calculate_contrast_and_phase
@@ -76,7 +73,7 @@ integer k, diff         ! difference of Nbar and Ncum
   ! update histogram 
    diff=Ncum-Nbar
    if( abs(diff) .gt. (nbin-1)/2 ) then 
-    write(*,*)'this should not happen'
+    write(*,*)'this should not happen',Ncum,Nbar
    else
     counts_hist((nbin-1)/2+diff) = counts_hist( (nbin-1)/2 + diff ) + 1
    end if
@@ -114,7 +111,6 @@ integer k
   write(15,*) k-1 -(nbin-1)/2 + nbar , counts_hist(k)
  end do
  close(15)
-write(*,*)'testing', k-1-(nbin-1)/2+nbar,nbin
 end subroutine write_counts_bin_data
 
 subroutine calculate_phase_moments_driver
