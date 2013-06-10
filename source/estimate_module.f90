@@ -10,9 +10,10 @@ integer :: fact_moments ! # number of factorial moments
                         ! to be calculated
 integer :: phase_moments! # of moments about the mean to
                       ! be calculated for the phase data
-parameter(nn=1e2,nbin=l, fact_moments=20, phase_moments=8)
+parameter(nn=1e3,nbin=l, fact_moments=20, phase_moments=8)
 real :: phase_n(nn), phasevec(phase_moments), phase_hist(nbin)
 real :: counts_hist(nbin), moments(fact_moments)
+real :: phase_stddev
 character(6) :: file_nbar, file_vis
 character(40) ::filepath
 contains
@@ -117,7 +118,7 @@ subroutine calculate_phase_moments_driver
 implicit none
  ! calculate moments
  call calculate_phase_moments(phase_moments,nn,&
-                        phase_n,phasevec)
+                        phase_n,phasevec,phase_stddev)
  ! save phase data to file
  call write_phase_moments()
 end subroutine calculate_phase_moments_driver
@@ -151,5 +152,10 @@ integer  :: k
   end do
  close(15)
 end subroutine calculate_factorial_moments_driver
+
+subroutine write_estimated_error
+implicit none
+ write(*,*)Nbar,vis,phase_stddev
+end subroutine write_estimated_error
 
 end module estimate_module

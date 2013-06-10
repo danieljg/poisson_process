@@ -32,9 +32,6 @@ contains
   if (command_argument_count().ne.0)then
    call read_command_arguments
   endif
-  CALL DATE_AND_TIME (REAL_CLOCK (1), REAL_CLOCK (2), &
-                      REAL_CLOCK (3), DATE_TIME)
-
  call date_and_time(real_clock(1), real_clock(2), &
                     real_clock(3), date_time)
  time_seed(1) = date_time(6)+date_time(7)+date_time(8)
