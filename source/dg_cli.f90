@@ -22,6 +22,9 @@ contains
 
  subroutine initialize_variables
  implicit none
+ integer :: date_time(8), time_seed(2), M=2
+ character (len = 12) :: real_clock(3)
+ real :: ran
   phase  = pi
   Nbar   = 4000
   vis    = 0.9
@@ -29,6 +32,16 @@ contains
   if (command_argument_count().ne.0)then
    call read_command_arguments
   endif
+  CALL DATE_AND_TIME (REAL_CLOCK (1), REAL_CLOCK (2), &
+                      REAL_CLOCK (3), DATE_TIME)
+
+ call date_and_time(real_clock(1), real_clock(2), &
+                    real_clock(3), date_time)
+ time_seed(1) = date_time(6)+date_time(7)+date_time(8)
+ time_seed(2) = date_time(1)+date_time(2)+date_time(8)
+ call random_seed(size=M)
+ call random_seed(put=time_seed(1:M))
+ call random_number(ran)
  end subroutine initialize_variables
 
  integer function read_real(k,variable)
@@ -61,7 +74,6 @@ program fkdg
 use dg_module
 implicit none
  call initialize_variables
- call random_seed
  call make_fringe_dataset
  call write_data
 end program fkdg
