@@ -44,10 +44,23 @@ do
   mv phase_histogram.dat results/nbar_$j/vis_$vis/
   mv counts_histogram.dat results/nbar_$j/vis_$vis/
   mv phase_moments.dat results/nbar_$j/vis_$vis/
-  #mv fact_moments.dat results/nbar_$j/vis_$vis/
+  mv fact_moments.dat results/nbar_$j/vis_$vis/
  done
  rm -r data/nbar_$j/
 done
-
+echo ================================================
+echo graficando
+cd results/
+gnuplot ../source/error_counts.p
+for (( k=kmin ; k<=kmax ; k++ ))
+do
+ vis=$((5*$k))
+ cat phase_error_$vis.dat >> phase_error.dat
+ echo >> phase_error.dat
+done
+rm phase_error_*.dat
+echo ================================================
 echo experimento terminado
+echo ================================================
 play -n synth 1 sine 500-400
+

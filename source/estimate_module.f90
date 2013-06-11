@@ -155,7 +155,7 @@ end subroutine calculate_factorial_moments_driver
 
 subroutine write_estimated_error
 implicit none
- write(*,*)Nbar,vis,phase_stddev
+ write(*,*)vis,Nbar,phase_stddev
 end subroutine write_estimated_error
 
 end module estimate_module
