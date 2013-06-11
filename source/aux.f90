@@ -85,11 +85,6 @@ implicit none
   ! Calcular fase por standard quantum limit
   call std_quantum(dataset,phaseval)
   phaseval=nint(phaseval*l/(2*pi))
-  if(tt.eq.1) then
-   write(*,*)"expected_phase",phase*l/(2*pi)
-   write(*,*)"estimated_phase",phaseval
-   tt=0
-  end if
  end subroutine estimate_phase
 
  subroutine std_quantum(dataset,phase)
@@ -132,25 +127,27 @@ implicit none
   end do
  end subroutine calculate_sine
 
- ! Calcular momentos alrededor de la media
- subroutine calculate_moments(n,k,vec,phase_moments)
+ ! Calcular momentos normalizados alrededor de la media
+ subroutine calculate_phase_moments(n,k,vec,phase_moments,stddev)
  implicit none
  integer, intent(in) :: n,k
  real, intent(in)    :: vec(k)
- real, intent(out)   :: phase_moments(n)
+ real, intent(out)   :: phase_moments(n),stddev
  integer :: kk,jj
  real, dimension(k)  :: temp
  real :: mean
  ! First moment about the origin
  mean = sum(vec)/k
+ ! Calculate std deviation
+ stddev = sqrt( sum((vec-mean)**2)/k )
  ! Moments about the origin
  do kk=1,n
   do jj=1,k
-   temp(jj) = (vec(jj)-mean)**kk 
+   temp(jj) = (vec(jj)-mean)**kk
   end do
-  phase_moments(kk) = sum( temp ) / k
+  phase_moments(kk) = sum( temp ) / (k*stddev**kk)
  end do
- end subroutine calculate_moments
+ end subroutine calculate_phase_moments
 
  ! Calculates double factorial
  function dfact(n)

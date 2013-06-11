@@ -4,8 +4,8 @@ use estimate_module
 implicit none
 real :: vector(l)
  call initialize_variables
- call random_seed
- call calculate_histogram_and_phases
- call phase_moments_driver
- call factorial_moments_driver
+ call calculate_contrast_and_phase
+ call calculate_phase_moments_driver
+ !call calculate_factorial_moments_driver
+ call write_estimated_error
 end program estimate
