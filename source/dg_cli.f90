@@ -25,7 +25,7 @@ contains
  integer :: date_time(8), time_seed(2), M=2
  character (len = 12) :: real_clock(3)
  real :: ran
-  phase  = pi
+  phase  = 3*pi/4
   Nbar   = 4000
   vis    = 0.9
   dt     = 1.3107e-3   ! time interval for a measurement

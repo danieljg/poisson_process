@@ -129,7 +129,7 @@ integer k
  open(15,file="phase.dat")
  write(15,*) '# ','"k" ','" phase(k)" '
  do k=1,nn
-  write(15,*)k,phase_n(k)-512
+  write(15,*)k,phase_n(k)
  enddo
  close(15)
  open(16,file="phase_moments.dat")
