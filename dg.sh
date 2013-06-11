@@ -11,7 +11,7 @@ echo Setting up variables and cleaning previous files
 rm fakedata.*
 # simple bash driver for dg_cli
 # number of fringes for each configuration
-number_of_fringes=1000
+number_of_fringes=100
 # number of expected photon arrivals goes
 # from : 10*2^jmin (should be 1)
 # to   : 10*2^jmax (should be 10 for final test)
@@ -25,6 +25,7 @@ number_of_fringes=1000
  kmax=19
 echo jmin=$jmin, jmax=$jmax
 echo kmin=$kmin, kmax=$kmax
+echo $number_of fringes repetitions to be performed
 echo ================================================
 echo main loop
 # set expected number of photons
@@ -42,7 +43,7 @@ do
   mkdir data/nbar_$j/vis_$vis/
   for ((l=1 ; l<=number_of_fringes ; l++))
   do
-   ./dg_cli $j $k
+   ./dg_cli $j $vis
    gzip fakedata.dat
    mv fakedata.dat.gz data/nbar_$j/vis_$vis/$l.gz
   done
