@@ -29,6 +29,7 @@ echo main loop
 # set expected number of photons
 for (( j=jmin ; j<=jmax ; j++ ))
 do
+ tar -zxvf data/nbar_$j.tar.gz -C data/ > /dev/null
  echo -----------------------------------------------
  echo photon number loop: j=$j of $jmax
  mkdir results/nbar_$j/
@@ -45,8 +46,8 @@ do
   mv phase_moments.dat results/nbar_$j/vis_$vis/
   #mv fact_moments.dat results/nbar_$j/vis_$vis/
  done
+ rm -r data/nbar_$j/
 done
 
-echo corriendo
-time ./estimate
+echo experimento terminado
 play -n synth 1 sine 500-400

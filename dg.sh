@@ -9,9 +9,10 @@ echo ================================================
 echo Setting up variables and cleaning previous files
 # old files be-gone
 rm fakedata.*
+rm data/*.gz
 # simple bash driver for dg_cli
 # number of fringes for each configuration
-number_of_fringes=100
+number_of_fringes=1000
 # number of expected photon arrivals goes
 # from : 10*2^jmin (should be 1)
 # to   : 10*2^jmax (should be 10 for final test)
@@ -48,4 +49,6 @@ do
    mv fakedata.dat.gz data/nbar_$j/vis_$vis/$l.gz
   done
  done
+ tar -zcvf data/nbar_$j.tar.gz data/nbar_$j > /dev/null
+ rm -r data/nbar_$j
 done
