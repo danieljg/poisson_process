@@ -10,7 +10,7 @@ integer :: fact_moments ! # number of factorial moments
                         ! to be calculated
 integer :: phase_moments! # of moments about the mean to
                       ! be calculated for the phase data
-parameter(nn=1e3,nbin=l, fact_moments=20, phase_moments=8)
+parameter(nn=1e2,nbin=l, fact_moments=20, phase_moments=8)
 real :: phase_n(nn), phasevec(phase_moments), phase_hist(nbin)
 real :: counts_hist(nbin), moments(fact_moments)
 real :: phase_stddev
