@@ -26,7 +26,7 @@ number_of_fringes=1000
  kmax=19
 echo jmin=$jmin, jmax=$jmax
 echo kmin=$kmin, kmax=$kmax
-echo $number_of fringes repetitions to be performed
+echo $number_of_fringes fringes repetitions to be performed
 echo ================================================
 echo main loop
 # set expected number of photons
