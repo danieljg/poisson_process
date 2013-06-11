@@ -49,6 +49,8 @@ do
    mv fakedata.dat.gz data/nbar_$j/vis_$vis/$l.gz
   done
  done
- tar -zcvf data/nbar_$j.tar.gz data/nbar_$j > /dev/null
- rm -r data/nbar_$j
+ cd data
+ tar -zcvf nbar_$j.tar.gz nbar_$j > /dev/null
+ rm -r nbar_$j
+ cd ..
 done

@@ -1,7 +1,8 @@
 ============================================================
 ++ compile.sh - Compilation commands for dg_cli and estimate
 
-No optimizations gave been implemented.
+Some optimizations have been implemented.
+No tests were made regarding these.
 ============================================================
 ++ dg_cli - Periodic Poisson process simulator with command
             line interface
@@ -14,17 +15,21 @@ The bash script file 'dg.sh' runs the executable 'dg_cli'
 with suitable command line arguments. There are variables
 here that define the total number of realizations and the
 expected number of photons per fringe. All output files are
-stored for later use in './data/'
+compressed for later use in './data/'
 ===========================================================
-++ estimate - Estimator for quality of simulation routines
+++ estimate    - Estimator of phase, contrast and quality 
+                 of simulation with command line interface
+++ estimate.sh - Bash driver for estimate
 
-This application generates the output file 'histogram.dat',
-which is a 1-1 record of the empirical distribution of
-arrivals per simulation period. The data is then tested for
-comparison with the factorial moments of the Poisson
-distribution. The output of this is given on
-'fact_moments.dat'.
+This application generates several output files which are
+stored on /results/ for later usage. Records of the experi-
+ments, along with evaluations of Poissonity are available.
 
-Finally, it calculates the phase for every generated fringe and stores it on 'phase.dat'. In the future, this will be followed by an analysis of dispersion.
+The numerical experiment presently calculates the expected
+error of the phase estimation algorithm for an array of
+contrasts and mean number of photons.
+
+In the future, this will be followed by a similar analysis
+for the contrast estimation.
 
 ===========================================================
