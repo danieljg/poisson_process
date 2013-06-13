@@ -10,7 +10,7 @@ contains
  integer :: k
   if(command_argument_count().ne.2)then
    write(*,*) 'The program must be run with two arguments "./dg_cli -nbar -vis"'
-   write(*,*) 'or none at all (defaultsn: bar=4000,vis=0.9)'
+   write(*,*) 'give it a try with: nbar=7,vis=0.9 for a nice, full fringe'
    stop
   endif
   k=1
@@ -29,9 +29,7 @@ contains
   Nbar   = 4000
   vis    = 0.9
   dt     = 1.3107e-3   ! time interval for a measurement
-  if (command_argument_count().ne.0)then
-   call read_command_arguments
-  endif
+  call read_command_arguments
  call date_and_time(real_clock(1), real_clock(2), &
                     real_clock(3), date_time)
  time_seed(1) = date_time(6)+date_time(7)+date_time(8)
