@@ -12,16 +12,16 @@ rm results/phase_error*
 # number of fringes for each configuration
 number_of_fringes=1000
 # number of expected photon arrivals goes
-# from : 10*2^jmin (should be 1)
+# from : 10*2^jmin (should be 0)
 # to   : 10*2^jmax (should be 10 for final test)
 # (calculation is internal)
- jmin=1
+ jmin=0
  jmax=10
 # evaluated visibilities go as
 # vis=k*5 (internal division by 100)
 # (should be from 1 to 20)
  kmin=1
- kmax=19
+ kmax=20
 echo jmin=$jmin, jmax=$jmax
 echo kmin=$kmin, kmax=$kmax
 echo ================================================
