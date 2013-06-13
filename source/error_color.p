@@ -1,5 +1,5 @@
 set encoding utf8
-set term postscript eps enhanced color size 5in,2.8in "FreeSans-Bold" 14
+set term postscript eps enhanced color size 5in,2.3in "FreeSans-Bold" 14
 set output 'error_color.eps'
 
 #set logscale x
@@ -9,7 +9,7 @@ set yrange [8:12000]
 
 set xlabel "Contrast (%)"
 set ylabel "Mean number of photons"
-set title "Color map for the expected error in phase estimation"
+#set title "Color map for the expected error in phase estimation"
 
 set pm3d
 set view map

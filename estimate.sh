@@ -44,7 +44,7 @@ do
   mv phase_histogram.dat results/nbar_$j/vis_$vis/
   mv counts_histogram.dat results/nbar_$j/vis_$vis/
   mv phase_moments.dat results/nbar_$j/vis_$vis/
-  mv fact_moments.dat results/nbar_$j/vis_$vis/
+  #mv fact_moments.dat results/nbar_$j/vis_$vis/
  done
  rm -r data/nbar_$j/
 done

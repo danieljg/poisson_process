@@ -28,7 +28,7 @@ implicit none
   do k=1,l
    ! calcular la intensidad por este "bin"
    lambda = &
-   ( 1.0 + (vis*Period/(2.0*pi*dt))*&
+   abs( 1.0 + (vis*Period/(2.0*pi*dt))*&
     (sin(2.0*pi*(k+0.5)*dt/Period + phase)&
      - sin(2.0*pi*(k-0.5)*dt/Period + phase) )& 
    ) * (Nbar/Period)

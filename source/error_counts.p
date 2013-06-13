@@ -1,16 +1,16 @@
 set encoding utf8
-set term postscript eps enhanced color dashed size 5in,2.8in "FreeSans-Bold" 14
+set term postscript eps enhanced color dashed size 5in,2.1in "FreeSans-Bold" 18
 set output 'error_counts.eps'
 
-set style line 1 lt rgb "#A00000" lw 3 pt 1
-set style line 2 lt rgb "#008000" lw 3 pt 6
+set style line 1 lt rgb "#A00000" lw 4 pt 1
+set style line 2 lt rgb "#008000" lw 4 pt 6
 set style line 3 lt rgb "#0000A0" lw 4 pt 3
 set style line 4 lt rgb "#208060" lw 4 pt 4
 set style line 5 lt rgb "#606000" lw 4 pt 5
 
 set ylabel 'Expected error [rads]'
-set xlabel 'Mean number of photon counts per fringe'
-set title 'Expected error for the Fourier Method'
+set xlabel 'Number of photons per fringe'
+#set title 'Expected error for the Fourier Method'
 
 set logscale x
 #set logscale y
