@@ -9,8 +9,6 @@ source compile.sh
 echo ================================================
 echo Setting up variables and cleaning previous files
 rm results/phase_error*
-# number of fringes for each configuration
-number_of_fringes=1000
 # number of expected photon arrivals goes
 # from : 10*2^jmin (should be 0)
 # to   : 10*2^jmax (should be 10 for final test)
@@ -59,8 +57,8 @@ do
  echo >> phase_error.dat
 done
 gnuplot ../source/error_color.p
-# donde remove, rather tar.gz it
-
+# dont remove the files, i could rather tar.gz'em...
+# but i haven't, so
 ###
 echo ================================================
 echo experimento terminado

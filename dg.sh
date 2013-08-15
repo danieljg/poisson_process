@@ -12,7 +12,7 @@ rm fakedata.*
 rm data/*.gz
 # simple bash driver for dg_cli
 # number of fringes for each configuration
-number_of_fringes=1000
+number_of_fringes=4000
 # number of expected photon arrivals goes
 # from : 10*2^jmin (should be 0)
 # to   : 10*2^jmax (should be 10 for final test)
